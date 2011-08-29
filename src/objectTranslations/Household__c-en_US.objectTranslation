@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Household</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Households</value>
+    </caseValues>
+    <layouts>
+        <layout>Household Layout</layout>
+        <sections>
+            <label><!-- Household Contact Information --></label>
+            <section>Household Contact Information</section>
+        </sections>
+        <sections>
+            <label><!-- Household Donation Information --></label>
+            <section>Household Donation Information</section>
+        </sections>
+        <sections>
+            <label><!-- Household Membership Information --></label>
+            <section>Household Membership Information</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>
