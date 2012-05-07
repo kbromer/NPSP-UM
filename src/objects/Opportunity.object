@@ -31,6 +31,32 @@
     </businessProcesses>
     <enableFeeds>true</enableFeeds>
     <fields>
+        <fullName>Amount_Outstanding__c</fullName>
+        <externalId>false</externalId>
+        <formula>Amount - NULLVALUE(Payments_Made__c, 0) - NULLVALUE(Amount_Written_Off__c, 0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Amount Outstanding</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Amount_Written_Off__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Value of the payments marked as written-off or noncollectable.</inlineHelpText>
+        <label>Payment Writeoff Amount</label>
+        <summarizedField>OppPayment__c.Payment_Amount__c</summarizedField>
+        <summaryFilterItems>
+            <field>OppPayment__c.Written_Off__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </summaryFilterItems>
+        <summaryForeignKey>OppPayment__c.Opportunity__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <type>Summary</type>
+    </fields>
+    <fields>
         <fullName>CombinedRollupFieldset__c</fullName>
         <description>Concatenated fields used during rollups to locate the most recent opportunity.</description>
         <externalId>false</externalId>
@@ -83,6 +109,15 @@
         </picklist>
         <trackFeedHistory>false</trackFeedHistory>
         <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Do_Not_Automatically_Create_Payment__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>If payments are active, and if checked, a new payment will not be automatically created for this Opportunity.</inlineHelpText>
+        <label>Do Not Automatically Create Payment</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Is_Opp_From_Individual__c</fullName>
@@ -195,6 +230,15 @@
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Number_of_Payments__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Total number of payments for this Opportunity (Donation)</inlineHelpText>
+        <label>Number of Payments</label>
+        <summaryForeignKey>OppPayment__c.Opportunity__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <type>Summary</type>
+    </fields>
+    <fields>
         <fullName>OrderNumber__c</fullName>
         <externalId>false</externalId>
         <label>Order Number - DEPRECATED</label>
@@ -203,6 +247,21 @@
         <trackFeedHistory>false</trackFeedHistory>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Payments_Made__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The sum of all payments marked as paid for this Opportunity.</inlineHelpText>
+        <label>Payment Amount Received</label>
+        <summarizedField>OppPayment__c.Payment_Amount__c</summarizedField>
+        <summaryFilterItems>
+            <field>OppPayment__c.Paid__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </summaryFilterItems>
+        <summaryForeignKey>OppPayment__c.Opportunity__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <type>Summary</type>
     </fields>
     <fields>
         <fullName>Recurring_Donation__c</fullName>

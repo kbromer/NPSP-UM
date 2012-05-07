@@ -14,6 +14,38 @@
         <name>Account_Processor__c</name>
     </fields>
     <fields>
+        <help><!-- !!WARNING!!
+DISABLES the IndividualAccounts.trigger (Contact, before i/u, after i/u/d)
+- checking this box will disable a trigger. This can cause erratic and unpredictable behavior in your NPSP. FOR ADVANCED CONSULTANTS AND DEVELOPERS ONLY. --></help>
+        <label><!-- DISABLE_IndividualAccounts_trigger --></label>
+        <name>DISABLE_IndividualAccounts_trigger__c</name>
+    </fields>
+    <fields>
+        <help><!-- !!WARNING!!
+DISABLES the OpportunityAccount.trigger (Opportunity, before insert)
+- checking this box will disable a trigger. This can cause erratic and unpredictable behavior in your NPSP. FOR ADVANCED CONSULTANTS AND DEVELOPERS ONLY. --></help>
+        <label><!-- DISABLE_OpportunityAccount_trigger --></label>
+        <name>DISABLE_OpportunityAccount_trigger__c</name>
+    </fields>
+    <fields>
+        <help><!-- !!WARNING!!
+DISABLES the OpportunityContactRoles.trigger (Opportunity, after insert)
+- checking this box will disable a trigger. This can cause erratic and unpredictable behavior in your NPSP. FOR ADVANCED CONSULTANTS AND DEVELOPERS ONLY. --></help>
+        <label><!-- DISABLE_OpportunityContactRoles_trigger --></label>
+        <name>DISABLE_OpportunityContactRoles_trigger__c</name>
+    </fields>
+    <fields>
+        <help><!-- !!WARNING!!
+DISABLES the OpportunityPayments.trigger (Opportunity, after insert, after update)
+- checking this box will disable a trigger. This can cause erratic and unpredictable behavior in your NPSP. FOR ADVANCED CONSULTANTS AND DEVELOPERS ONLY. --></help>
+        <label><!-- DISABLE_OpportunityPayments_trigger --></label>
+        <name>DISABLE_OpportunityPayments_trigger__c</name>
+    </fields>
+    <fields>
+        <label><!-- Default Opp on Convert --></label>
+        <name>Default_Opp_on_Convert__c</name>
+    </fields>
+    <fields>
         <help><!-- Check this to turn off the Account Model trigger. Accounts will no longer be automatically created for Contacts. Only use this if you understand the ramifications. Turning off the account model could get your data into an inconsistent state. --></help>
         <label><!-- Disable Account Model Trigger --></label>
         <name>Disable_Account_Model_Trigger__c</name>
@@ -24,9 +56,46 @@
         <name>Enable_Opportunity_Contact_Role_Trigger__c</name>
     </fields>
     <fields>
+        <help><!-- Controls if the package automatically checks for new updates and versions. --></help>
+        <label><!-- Enable Update Check --></label>
+        <name>Enable_Update_Check__c</name>
+    </fields>
+    <fields>
+        <label><!-- Has Package Update --></label>
+        <name>Has_Package_Update__c</name>
+    </fields>
+    <fields>
+        <help><!-- The date/time of the last callout to check for new versions of the NPSP packages. --></help>
+        <label><!-- Last Update Check --></label>
+        <name>Last_Update_Check__c</name>
+    </fields>
+    <fields>
+        <label><!-- Max Package Version --></label>
+        <name>Max_Package_Version__c</name>
+    </fields>
+    <fields>
+        <help><!-- The ID of the record type to be used for 1x1 accounts. If none is selected, the account will default to the user&apos;s default account selection. --></help>
+        <label><!-- One-to-One RecordTypeID --></label>
+        <name>One_to_One_RecordTypeID__c</name>
+    </fields>
+    <fields>
         <help><!-- Default role for the primary Opportunity Contact Role --></help>
         <label><!-- Opportunity Contact Role Default role --></label>
         <name>Opportunity_Contact_Role_Default_role__c</name>
+    </fields>
+    <fields>
+        <label><!-- Package Update URL --></label>
+        <name>Package_Update_URL__c</name>
+    </fields>
+    <fields>
+        <help><!-- Enables automatic payments for new Opportunities/Donations. --></help>
+        <label><!-- Payments Enabled --></label>
+        <name>Payments_Enabled__c</name>
+    </fields>
+    <fields>
+        <help><!-- The number of days between NPSP callouts to check for new versions of this package. The default value is 90 days. --></help>
+        <label><!-- Update Check Interval --></label>
+        <name>Update_Check_Interval__c</name>
     </fields>
     <startsWith>Consonant</startsWith>
 </CustomObjectTranslation>
