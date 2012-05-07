@@ -109,11 +109,13 @@ if(ISPICKVAL(Secondary_Address_Type__c,&quot;Home&quot;),
     </fields>
     <fields>
         <fullName>Household__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Household</label>
         <referenceTo>Household__c</referenceTo>
         <relationshipLabel>Household Members</relationshipLabel>
         <relationshipName>Contacts</relationshipName>
+        <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <type>Lookup</type>
     </fields>

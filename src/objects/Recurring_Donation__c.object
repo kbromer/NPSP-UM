@@ -33,7 +33,7 @@
         <type>Default</type>
     </actionOverrides>
     <deploymentStatus>Deployed</deploymentStatus>
-    <description>Recurring Donations and Pledges</description>
+    <description>Recurring Donations with no end date.</description>
     <enableActivities>false</enableActivities>
     <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>false</enableFeeds>
@@ -51,10 +51,12 @@
     </fields>
     <fields>
         <fullName>Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Contact</label>
         <referenceTo>Contact</referenceTo>
         <relationshipName>R00N80000002bOmREAU</relationshipName>
+        <required>false</required>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
     </fields>
@@ -85,7 +87,18 @@
     <fields>
         <fullName>Installment_Amount__c</fullName>
         <externalId>false</externalId>
-        <formula>IF( text(Schedule_Type__c)=$Label.RecurringDonationMultiplyValue , Amount__c , IF(Installments__c&gt;0,Amount__c / Installments__c,0))</formula>
+        <formula>IF( 
+
+OR(
+(text(Schedule_Type__c)=$Label.RecurringDonationMultiplyValue), 
+(text(Open_Ended_Status__c)=$Label.RecurringDonationOpenStatus)
+) 
+, Amount__c , IF(Installments__c&gt;0,Amount__c / Installments__c,0)
+
+
+
+
+)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Installment Amount</label>
         <precision>18</precision>
@@ -97,6 +110,7 @@
     <fields>
         <fullName>Installment_Period__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Sets the installment period for your recurring donations.  WARNING: Changing the Installment Period for an existing open-ended Recurring Donation can cause open Opportunities to be deleted and recreated. Any associated data may not be retained.</inlineHelpText>
         <label>Installment Period</label>
         <picklist>
             <picklistValues>
@@ -112,6 +126,14 @@
                 <default>false</default>
             </picklistValues>
             <picklistValues>
+                <fullName>Weekly</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>1st and 15th</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
                 <fullName>Custom</fullName>
                 <default>false</default>
             </picklistValues>
@@ -122,8 +144,10 @@
     </fields>
     <fields>
         <fullName>Installments__c</fullName>
+        <defaultValue>1</defaultValue>
         <externalId>false</externalId>
-        <label># of Installments</label>
+        <inlineHelpText>Number of installments.</inlineHelpText>
+        <label>Installments</label>
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
@@ -132,21 +156,78 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Last_Payment_Date__c</fullName>
+        <description>Date of the last payment for this Recurring Donation</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Date of the last payment for this Recurring Donation</inlineHelpText>
+        <label>Last Donation Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Next_Payment_Date__c</fullName>
+        <description>Holds the date of the next recurring payment.  Manually editing this field will recalculate all future opportunity&apos;s close dates based on the scheduled defined.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Holds the date of the next recurring payment.  Manually editing this field will recalculate all future opportunity&apos;s close dates based on the scheduled defined.</inlineHelpText>
+        <label>Next Donation Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Open_Ended_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Open Ended Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Open</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Closed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>None</fullName>
+                <default>true</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
         <fullName>Organization__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Organization</label>
         <referenceTo>Account</referenceTo>
         <relationshipName>RecurringDonations</relationshipName>
+        <required>false</required>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Paid_Amount__c</fullName>
+        <description>Total Amount paid on this Recurring Donation</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Total Amount paid on this Recurring Donation</inlineHelpText>
+        <label>Paid Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Recurring_Donation_Campaign__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Campaign</label>
         <referenceTo>Campaign</referenceTo>
-        <relationshipLabel>Recurring Donations &amp; Pledges</relationshipLabel>
         <relationshipName>Recurring_Donations_Pledges</relationshipName>
+        <required>false</required>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
     </fields>
@@ -169,14 +250,28 @@
         <type>Picklist</type>
     </fields>
     <fields>
+        <fullName>Total_Paid_Installments__c</fullName>
+        <description>Total number of installments paid on this open-ended recurring donation.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Total number of installments paid on this open-ended recurring donation.</inlineHelpText>
+        <label>Total Paid Installments</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Total__c</fullName>
         <externalId>false</externalId>
-        <formula>CASE(
+        <formula>IF(TEXT( Open_Ended_Status__c) =  $Label.RecurringDonationOpenStatus, 0,
+CASE(
  Schedule_Type__c ,
 &quot;Multiply By&quot;, Installments__c * Amount__c ,
 &quot;Divide By&quot;,Amount__c
 ,0
-)</formula>
+))</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Total</label>
         <precision>18</precision>
@@ -185,13 +280,13 @@
         <trackHistory>false</trackHistory>
         <type>Currency</type>
     </fields>
-    <label>Recurring Donation/Pledge</label>
+    <label>Recurring Donations</label>
     <nameField>
         <label>Recurring Donation Name</label>
         <trackHistory>false</trackHistory>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Recurring Donations &amp; Pledges</pluralLabel>
+    <pluralLabel>Recurring Donations</pluralLabel>
     <searchLayouts>
         <customTabListAdditionalFields>Contact__c</customTabListAdditionalFields>
         <customTabListAdditionalFields>Organization__c</customTabListAdditionalFields>
@@ -241,5 +336,17 @@
         <protected>false</protected>
         <requireRowSelection>false</requireRowSelection>
         <url>{!URLFOR($Action.Recurring_Donation__c.New, null,  [Name  =  Contact.FirstName &amp; &quot; &quot;&amp; Contact.LastName&amp;&quot; Donation - &quot;&amp;   TEXT( TODAY()),retURL=&quot;/&quot;&amp;Contact.Id])}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Refresh_Opportunities</fullName>
+        <availability>online</availability>
+        <description>Run the check opp routine for Recurring Donations</description>
+        <displayType>button</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Refresh Opportunities</masterLabel>
+        <openType>sidebar</openType>
+        <page>RecurringDonations_AddDonationsBTN</page>
+        <protected>false</protected>
     </webLinks>
 </CustomObject>
