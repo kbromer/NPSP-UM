@@ -1,3 +1,37 @@
+/*
+    Copyright (c) 2010, Salesforce.com Foundation
+    All rights reserved.
+    
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+    
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of the Salesforce.com Foundation nor the names of
+      its contributors may be used to endorse or promote products derived
+      from this software without specific prior written permission.
+ 
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
+    COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
+    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
+    BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
+    LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+    ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+    POSSIBILITY OF SUCH DAMAGE.
+*/
+/**
+* @author Jason Venable & Evan Callahan
+* @date 2010 (2.x)
+* @description Controller for lead conversion of 1x1 contacts
+*/
 public with sharing class LeadConvertOverride {
 // Controller for lead conversion of one-to-one contacts
  
@@ -20,8 +54,12 @@ public with sharing class LeadConvertOverride {
     map<id, contact> conMap = new map<id, contact>(); 
     public list<selectOption> lcStatuses; 
     
+    private Contacts_And_Orgs_Settings__c ContactsSettings; 
+    
     public LeadConvertOverride(ApexPages.StandardController controller) {
-                
+        
+        ContactsSettings = Constants.getContactsSettings();
+                            
         // get the lead
         l = [select id, name, firstname, lastname, company, email, ownerId from lead
             where id = : controller.getId()];
@@ -33,7 +71,7 @@ public with sharing class LeadConvertOverride {
         
         // set a default opp name
         oppName = l.name;
-        doNotCreateOpp = false;
+        doNotCreateOpp = !ContactsSettings.Default_Opp_on_Convert__c;
         
     }    
     
@@ -99,13 +137,21 @@ public with sharing class LeadConvertOverride {
         if (!doNotCreateOpp) lc.setOpportunityName(oppName);
         lc.setDoNotCreateOpportunity(doNotCreateOpp);
         lc.setConvertedStatus(leadConvStatus);
-
+        
         // is this a merge to existing?
         if (con != 'NEW_CONTACT') { 
             // get this contact's account
             lc.setContactId(con);
             lc.setAccountId(conMap.get(con).accountId);          
-        }       
+        }
+        else{
+        	if (!Constants.isOneToOne() && 
+        	(l.Company == Constants.BUCKET_ACCOUNT_NAME || l.Company == 'self' 
+        	|| l.Company == '' || l.Company == null))
+        	   lc.setAccountID(Constants.getIndividualAccountID());
+        }
+        
+               
 
         // convert the lead
         PageReference pageRef;
@@ -115,7 +161,7 @@ public with sharing class LeadConvertOverride {
             
             
             // fix the account that lead conversion created
-            if (con == 'NEW_CONTACT') {     
+            if (con == 'NEW_CONTACT' && Constants.isOneToOne()) {     
                 //
                 Contact[] myconvertedContact = [select id,firstname, lastname from contact where id=:lcr.getContactId()];
                 
@@ -126,6 +172,36 @@ public with sharing class LeadConvertOverride {
                 myAccount.SYSTEMISINDIVIDUAL__c = true;
                 update myAccount;
             }   
+            
+            
+            //clean up the extra OCR Issue #214
+            // if we create an opp, its a 1x1, and its merged into an existing contact
+            if (!doNotCreateOpp && Constants.isOneToOne() && con != 'NEW_CONTACT'){
+                
+                //get the new OCRs
+                list<OpportunityContactRole> ocrList = [select id, isPrimary, Role from OpportunityContactRole where OpportunityID = :lcr.getOpportunityId() and ContactID = :lcr.getContactId()];
+            	
+            	//if there are more than one, find the primary with the right role, and delete 
+            	//the extraneous ones
+            	if (ocrList != null && ocrList.size() > 1){
+                    list<OpportunityContactRole> dlist = new list<OpportunityContactRole>();
+                    for (OpportunityContactRole ocr : ocrList){
+                        if (!ocr.IsPrimary && dlist.size()+1 != ocrList.size()){
+                            dlist.add(ocr);    	
+                        }
+                        else if (ocr.Role != ContactsSettings.Opportunity_Contact_Role_Default_role__c && dlist.size()+1 != ocrList.size()){
+                        	dlist.add(ocr);
+                        }
+                    }
+                    delete dlist;
+                    
+                    //on delete of one ocr, the other 'isPrimary' is set to false
+                    //so we need to issue an udpate to correct it. 
+                    OpportunityContactRole ocr = ocrList[0];
+                    ocr.IsPrimary = true;
+                    update ocr;
+            	} 
+            }
             
             
             

@@ -13,7 +13,7 @@
     * Neither the name of the Salesforce.com Foundation nor the names of
       its contributors may be used to endorse or promote products derived
       from this software without specific prior written permission.
-
+ 
     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
     "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
@@ -27,9 +27,10 @@
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
     POSSIBILITY OF SUCH DAMAGE.
 */
-
-/*
-This controller has been deprecated. it was replaced with an after delete trigger action.
+/**
+* @author Salesforce.com Foundation
+* @date 2011 (1.x)
+* @description Controller has been depcrecated and replaced with an after delete trigger action 
 */
 public class ContactDeleteOverride
 {

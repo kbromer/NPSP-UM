@@ -13,7 +13,7 @@
     * Neither the name of the Salesforce.com Foundation nor the names of
       its contributors may be used to endorse or promote products derived
       from this software without specific prior written permission.
-
+ 
     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
     "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
@@ -27,7 +27,12 @@
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
     POSSIBILITY OF SUCH DAMAGE.
 */
-global without sharing class IndividualAccounts
+/**
+* @author Salesforce.com Foundation
+* @date 2011 (1.x)
+* @description Implements one of two account models, 1x1 or bucket - controls syncing within the model 
+*/
+global with sharing class IndividualAccounts
 {
 
     /// <name> IndividualAccounts </name>
@@ -40,9 +45,12 @@ global without sharing class IndividualAccounts
     /// <param name="contacts"> Contact objects that are being triggered </param>
     /// <param name="oldContacts"> Contact object values before trigger event </param>
     /// <param name="ta"> Trigger action that is occuring </param>
+    private static Contacts_and_Orgs_Settings__c ContactsSettings;
+    
     public IndividualAccounts(Contact[] contacts, Contact[] oldContacts, Constants.triggerAction ta)
     {
-        Contacts_and_Orgs_Settings__c ContactsSettings = Constants.getContactsSettings();
+            ContactsSettings = Constants.getContactsSettings();
+            
             if(!ContactsSettings.Disable_Account_Model_Trigger__c){
             List<Contact> individualInserts = new List<Contact>();
             List<Contact> individualUpdates = new List<Contact>();
@@ -91,8 +99,7 @@ global without sharing class IndividualAccounts
                             3. The Individual model is chosen in the SystemAccountProcessor__c
                         */
                         if (c.AccountId == null && c.Private__c != true && !Constants.isOneToOne())
-                        {
-        
+                        {        
                             bucketContacts.add(c);
                         }
                     }
@@ -288,8 +295,8 @@ global without sharing class IndividualAccounts
                 
                 
             } else {
-                //construct the 1x1 account for the Contact
-                Account a = new Account(OwnerID = c.OwnerID);
+                //construct the individul account for the Contact
+                Account a = new Account();
                 String aName = '';
                 if (c.FirstName != null)
                 {
@@ -313,10 +320,19 @@ global without sharing class IndividualAccounts
                 a.ShippingCity = c.OtherCity;
                 a.ShippingState = c.OtherState;
                 a.ShippingCountry = c.OtherCountry;
-                
                 //flag the account as an individual account
                 //a.Type = Constants.ONE_TO_ONE_ORGANIZATION_TYPE;
                 a.SYSTEM_AccountType__c = Constants.ONE_TO_ONE_ORGANIZATION_TYPE;
+                
+                //check if recordtypes are enabled, and if it matches the existing setting
+                if (ContactsSettings.One_to_One_RecordTypeID__c != null){
+                    Schema.DescribeSObjectResult R = Account.SObjectType.getDescribe();
+                    Map<Id,Schema.RecordTypeInfo> rtMapById = r.getRecordTypeInfosById();
+                    Schema.RecordTypeInfo rtById =  rtMapById.get(ContactsSettings.One_to_One_RecordTypeID__c);
+			        if (rtById != null){                
+                	   a.put('RecordTypeID', rtByID.getRecordTypeID());
+			        }
+                }
                 
                 a.SYSTEMISINDIVIDUAL__c = true;
                 accountInserts.add(a);
@@ -372,8 +388,7 @@ global without sharing class IndividualAccounts
                 c.OtherCity != a.ShippingCity ||
                 c.OtherState != a.ShippingState ||
                 c.OtherPostalCode != a.ShippingPostalCode ||
-                c.OtherCountry != a.ShippingCountry ||   
-              //  a.OwnerID != c.OwnerID ||              
+                c.OtherCountry != a.ShippingCountry ||
                 c.FirstName + ' ' + c.LastName != a.Name)
             ) {
                 // Update Account fields
@@ -388,7 +403,6 @@ global without sharing class IndividualAccounts
                 a.ShippingPostalCode = c.OtherPostalCode;
                 a.ShippingCountry = c.OtherCountry;
                 a.Name = c.FirstName + ' ' + c.LastName;
-                //a.OwnerId = c.OwnerId;
                 
                 accountUpdates.add(a);
             }

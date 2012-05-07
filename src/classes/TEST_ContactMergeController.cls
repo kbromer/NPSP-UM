@@ -13,7 +13,7 @@
     * Neither the name of the Salesforce.com Foundation nor the names of
       its contributors may be used to endorse or promote products derived
       from this software without specific prior written permission.
-
+ 
     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
     "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
@@ -27,18 +27,11 @@
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
     POSSIBILITY OF SUCH DAMAGE.
 */
-/*
-    static testMethod void soslTest() {
-        Account thisAccount = new Account(name='junk');
-        insert thisAccount;
-       Id [] fixedSearchResults= new Id[1];
-       fixedSearchResults[0] = thisAccount.id;
-       Test.setFixedSearchResults(fixedSearchResults);
-       List<List<SObject>> searchList = [FIND 'test' 
-                                         IN ALL FIELDS RETURNING 
-                                            Account(id, name WHERE name = 'test' LIMIT 1)];
-    }
-    */
+/**
+* @author Salesforce.com Foundation
+* @date 2011 (2.x)
+* @description Tests for ContactMergeController 
+*/
 @isTest
 private class TEST_ContactMergeController {
 

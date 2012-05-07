@@ -13,7 +13,7 @@
     * Neither the name of the Salesforce.com Foundation nor the names of
       its contributors may be used to endorse or promote products derived
       from this software without specific prior written permission.
-
+ 
     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
     "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
@@ -27,9 +27,10 @@
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
     POSSIBILITY OF SUCH DAMAGE.
 */
-
-/*
-    Constants for use in other IndividualAccounts.cls
+/**
+* @author Salesforce.com Foundation
+* @date 2011 (1.x)
+* @description Constants for use in IndividualAccounts.cls 
 */
 global with sharing class Constants {
     //One-to-One value for system processor field
@@ -90,6 +91,7 @@ global with sharing class Constants {
                 }
                 //set the other settings to reasonable defaults
                 ContactsSettings.Enable_Opportunity_Contact_Role_Trigger__c = false;
+                ContactsSettings.Payments_Enabled__c  = true;
                 //ContactsSettings.Opportunity_Contact_Role_Default_role__c = 'Donor';
                 ContactsSettings.Setupownerid = UserInfo.getOrganizationId();
                 //this is not allowed...
@@ -104,12 +106,14 @@ global with sharing class Constants {
         //clear out whatever settings exist
         delete [select id from Contacts_and_Orgs_Settings__c];
         
-        //create our own based on what's passed in from the test
+        //create our own based on what's passed in from the test 
         ContactsSettings = new Contacts_and_Orgs_Settings__c (
+            One_to_One_RecordTypeID__c = mySettings.One_to_One_RecordTypeID__c, 
             Account_Processor__c = mySettings.Account_Processor__c,
             Enable_Opportunity_Contact_Role_Trigger__c = mySettings.Enable_Opportunity_Contact_Role_Trigger__c,
             Opportunity_Contact_Role_Default_role__c = mySettings.Opportunity_Contact_Role_Default_role__c,
-            Disable_Account_Model_Trigger__c = mySettings.Disable_Account_Model_Trigger__c
+            Disable_Account_Model_Trigger__c = mySettings.Disable_Account_Model_Trigger__c,
+            Payments_Enabled__c = mySettings.Payments_Enabled__c
             );
         insert ContactsSettings;
             
