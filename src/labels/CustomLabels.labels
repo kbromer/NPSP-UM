@@ -263,6 +263,20 @@
         <value>Select which Contacts get Households: All, only those related to an Individual Account, or none.</value>
     </labels>
     <labels>
+        <fullName>Matching_Donation_Record_Suffix</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Suffix added to the name of the original donation to form matching donation name</shortDescription>
+        <value>{3} Matching Donation {1}</value>
+    </labels>
+    <labels>
+        <fullName>Matching_Donation_Record_Type</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Record type for matching donation. Set to $Source to match the original donation</shortDescription>
+        <value>$Source</value>
+    </labels>
+    <labels>
         <fullName>NameReplacementText</fullName>
         <categories>Households, Household Naming</categories>
         <language>en_US</language>
@@ -290,6 +304,14 @@
         <protected>true</protected>
         <shortDescription>Opportunity Rollup Scheduling Error Text</shortDescription>
         <value>You have reached your limit of Scheduled Apex jobs and the Opportunity Rollups won\&apos;t run nightly. If you want this job to run nightly, delete one of your scheduled jobs and reload this page.</value>
+    </labels>
+    <labels>
+        <fullName>Payments_Settings_Enable_Help_Text</fullName>
+        <categories>Contacts &amp; Organizations, Payments</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Payments Settings Enable Help Text</shortDescription>
+        <value>Turn Payments on and off.</value>
     </labels>
     <labels>
         <fullName>Primary_Donor_Contact_Role</fullName>
