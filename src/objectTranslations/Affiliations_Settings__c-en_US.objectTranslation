@@ -8,5 +8,10 @@
         <plural>true</plural>
         <value>Affiliations Settings</value>
     </caseValues>
+    <fields>
+        <help><!-- Create Affiliations for all Contacts connected to Accounts --></help>
+        <label><!-- Automatic Affiliation Creation Turned On --></label>
+        <name>Automatic_Affiliation_Creation_Turned_On__c</name>
+    </fields>
     <startsWith>Consonant</startsWith>
 </CustomObjectTranslation>

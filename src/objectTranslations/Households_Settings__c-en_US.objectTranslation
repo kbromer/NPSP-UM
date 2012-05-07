@@ -8,5 +8,151 @@
         <plural>true</plural>
         <value>Households Settings</value>
     </caseValues>
+    <fields>
+        <help><!-- Activate advanced household naming functionality in version 2.1+.  This will provide dynamic naming for Household Names, Informal and Formal Greetings. --></help>
+        <label><!-- Advanced Household Naming --></label>
+        <name>Advanced_Household_Naming__c</name>
+    </fields>
+    <fields>
+        <help><!-- Always rollup to the primary contact, and corresponding household, on an opp. even if the opportunity is not from an individual (i.e. from a company, foundation, etc.) --></help>
+        <label><!-- Always Rollup to Primary Contact --></label>
+        <name>Always_Rollup_to_Primary_Contact__c</name>
+    </fields>
+    <fields>
+        <help><!-- This is a non-exposed setting to toggle household naming code to use an asynchronous version instead of the standard version. --></help>
+        <label><!-- Async Household Naming --></label>
+        <name>Async_Household_Naming__c</name>
+    </fields>
+    <fields>
+        <help><!-- !!WARNING!!
+DISABLES the HouseholdAfter.trigger (Household__c, after update)
+- checking this box will disable a trigger.  This can cause erratic and unpredictable behavior in your NPSP.  FOR ADVANCED CONSULTANT AND DEVELOPERS ONLY. --></help>
+        <label><!-- DISABLE_HouseholdAfter_trigger --></label>
+        <name>DISABLE_HouseholdAfter_trigger__c</name>
+    </fields>
+    <fields>
+        <help><!-- !!WARNING!!
+DISABLES the HouseholdBefore.trigger (Household__c, before update)
+- checking this box will disable a trigger.  This can cause erratic and unpredictable behavior in your NPSP. FOR ADVANCED CONSULTANTS AND DEVELOPERS ONLY. --></help>
+        <label><!-- DISABLE_HouseholdBefore_trigger --></label>
+        <name>DISABLE_HouseholdBefore_trigger__c</name>
+    </fields>
+    <fields>
+        <help><!-- !!WARNING!!
+DISABLES the Household_Opportunity.trigger (Opportunity, after insert)
+- checking this box will disable a trigger.  This can cause erratic and unpredictable behavior in your NPSP. FOR ADVANCED CONSULTANTS AND DEVELOPERS ONLY. --></help>
+        <label><!-- DISABLE_Household_Opportunity_trigger --></label>
+        <name>DISABLE_Household_Opportunity_trigger__c</name>
+    </fields>
+    <fields>
+        <help><!-- !!WARNING!!
+DISABLES the Households.trigger (Contact, after insert, after update, after delete)
+- checking this box will disable a trigger.  This can cause erratic and unpredictable behavior in your NPSP. FOR ADVANCED CONSULTANTS AND DEVELOPERS ONLY. --></help>
+        <label><!-- DISABLE_Households_trigger --></label>
+        <name>DISABLE_Households_trigger__c</name>
+    </fields>
+    <fields>
+        <help><!-- !!WARNING!!
+DISABLES the OpportunityRollup.trigger (Opportunity, after insert, after update, after delete)
+- checking this box will disable a trigger.  This can cause erratic and unpredictable behavior. FOR ADVANCED CONSULTANTS AND DEVELOPERS ONLY. --></help>
+        <label><!-- DISABLE_OpportunityRollup_trigger --></label>
+        <name>DISABLE_OpportunityRollup_trigger__c</name>
+    </fields>
+    <fields>
+        <help><!-- Check this box to update opportunity totals whenever opportunities are inserted or updated (as long as capacity allows). --></help>
+        <label><!-- Roll Up Opps in Triggers --></label>
+        <name>Enable_Opp_Rollup_Triggers__c</name>
+    </fields>
+    <fields>
+        <help><!-- Controls if the package automatically checks for new updates and versions. --></help>
+        <label><!-- Enable Update Check --></label>
+        <name>Enable_Update_Check__c</name>
+    </fields>
+    <fields>
+        <help><!-- Names of opportunity record types to exclude when rolling up account opportunities. Separate record type names with semicolons. --></help>
+        <label><!-- Opp Rectypes Excluded for Account Rollup --></label>
+        <name>Excluded_Account_Opp_Rectypes__c</name>
+    </fields>
+    <fields>
+        <help><!-- Values for the opportunity Type field to exclude when rolling up account opportunities. Separate types with semicolons. --></help>
+        <label><!-- Opp Types Excluded for Account Rollup --></label>
+        <name>Excluded_Account_Opp_Types__c</name>
+    </fields>
+    <fields>
+        <help><!-- Names of opportunity record types to exclude when rolling up contact opportunities. Separate record type names with semicolons. --></help>
+        <label><!-- Opp Rectypes Excluded for Contact Rollup --></label>
+        <name>Excluded_Contact_Opp_Rectypes__c</name>
+    </fields>
+    <fields>
+        <help><!-- Values for the opportunity Type field to exclude when rolling up contact opportunities. Separate types with semicolons. --></help>
+        <label><!-- Opp Types Excluded for Contact Rollup --></label>
+        <name>Excluded_Contact_Opp_Types__c</name>
+    </fields>
+    <fields>
+        <label><!-- Has Package Update --></label>
+        <name>Has_Package_Update__c</name>
+    </fields>
+    <fields>
+        <help><!-- Check this field to create automatic Contact Roles for Household members of the Primary Contact --></help>
+        <label><!-- Household Contact Roles On --></label>
+        <name>Household_Contact_Roles_On__c</name>
+    </fields>
+    <fields>
+        <help><!-- The report ID of the Household Mailing List Report used for Household-deduplicated Campaign mailing lists.  Report should be of Campaigns with Contacts, where Member Status does not contain &apos;Duplicate&apos; --></help>
+        <label><!-- Household Mailing List ID --></label>
+        <name>Household_Mailing_List_ID__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select the Contact Role for Household Members --></help>
+        <label><!-- Household Member Contact Role --></label>
+        <name>Household_Member_Contact_Role__c</name>
+    </fields>
+    <fields>
+        <help><!-- Select which Contacts get Households: All, only those related to an Individual Account, or none. --></help>
+        <label><!-- Household Rules --></label>
+        <name>Household_Rules__c</name>
+    </fields>
+    <fields>
+        <label><!-- Last Update Check --></label>
+        <name>Last_Update_Check__c</name>
+    </fields>
+    <fields>
+        <label><!-- Max Package Version --></label>
+        <name>Max_Package_Version__c</name>
+    </fields>
+    <fields>
+        <help><!-- The length of the grace period (in days) after a membership expires (last end date) before the status moves from &apos;Grace Period&apos; to &apos;Expired&apos;.  Defaults to 30 days. --></help>
+        <label><!-- Membership Grace Period --></label>
+        <name>Membership_Grace_Period__c</name>
+    </fields>
+    <fields>
+        <help><!-- Name of record types, such as Membership, that you want to roll up separately from other types. Separate record type names with semicolons. --></help>
+        <label><!-- Membership Record Type Names --></label>
+        <name>Membership_Record_Types__c</name>
+    </fields>
+    <fields>
+        <help><!-- Id for the currently scheduled Opportunity Rollup Job --></help>
+        <label><!-- Opp Rollup Scheduled Job Id --></label>
+        <name>Opp_Rollup_Scheduled_Job_Id__c</name>
+    </fields>
+    <fields>
+        <label><!-- Package Update URL --></label>
+        <name>Package_Update_URL__c</name>
+    </fields>
+    <fields>
+        <help><!-- Provide a value for &apos;N day&apos; rollups, where &apos;N&apos; is the number of days from today into the past.  This value defaults to rollup over the past 365 days. --></help>
+        <label><!-- Rollup N Day Value --></label>
+        <name>Rollup_N_Day_Value__c</name>
+    </fields>
+    <fields>
+        <help><!-- The number of days between NPSP callouts to check for new versions of this package. The default value is 90 days. --></help>
+        <label><!-- Update Check Interval --></label>
+        <name>Update_Check_Interval__c</name>
+    </fields>
+    <fields>
+        <help><!-- Checking this box will cause opportunity rollup totals to respect fiscal year, instead of calendar years settings. To set Fiscal Year information, go to Setup-&gt;Company Profile-&gt;Fiscal Year.  NOTE: Custom Fiscal Year Settings are NOT supported. --></help>
+        <label><!-- Use Fiscal Year for Rollups --></label>
+        <name>Use_Fiscal_Year_for_Rollups__c</name>
+    </fields>
     <startsWith>Consonant</startsWith>
 </CustomObjectTranslation>
