@@ -14,7 +14,9 @@
     </actionOverrides>
     <actionOverrides>
         <actionName>Edit</actionName>
-        <type>Default</type>
+        <content>manageHousehold</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
     </actionOverrides>
     <actionOverrides>
         <actionName>List</actionName>
@@ -22,7 +24,9 @@
     </actionOverrides>
     <actionOverrides>
         <actionName>New</actionName>
-        <type>Default</type>
+        <content>manageHousehold</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
     </actionOverrides>
     <actionOverrides>
         <actionName>Tab</actionName>
@@ -32,18 +36,37 @@
         <actionName>View</actionName>
         <type>Default</type>
     </actionOverrides>
-    <deploymentStatus>Deployed</deploymentStatus>
+    <deploymentStatus>InDevelopment</deploymentStatus>
+    <description>Physical mailing address for grouping contacts</description>
     <enableActivities>true</enableActivities>
     <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>false</enableFeeds>
-    <enableHistory>false</enableHistory>
+    <enableHistory>true</enableHistory>
     <enableReports>true</enableReports>
+    <fieldSets>
+        <fullName>Manage_Household_Custom</fullName>
+        <description>Fields displayed on manage household page</description>
+        <displayedFields>
+            <field>HouseholdPhone__c</field>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>AverageAmount__c</field>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>LastCloseDate__c</field>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <label>Manage_Household_Custom</label>
+    </fieldSets>
     <fields>
         <fullName>Addressee__c</fullName>
         <externalId>false</externalId>
         <label>Addressee</label>
         <length>255</length>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
     </fields>
@@ -52,6 +75,7 @@
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>Always Anonymous</label>
+        <trackHistory>false</trackHistory>
         <type>Checkbox</type>
     </fields>
     <fields>
@@ -62,13 +86,35 @@
         <precision>16</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackHistory>false</trackHistory>
         <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Best_Gift_Year_Total__c</fullName>
+        <externalId>false</externalId>
+        <label>Best Gift Year Total</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Best_Gift_Year__c</fullName>
+        <externalId>false</externalId>
+        <label>Best Gift Year</label>
+        <length>4</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>FirstCloseDate__c</fullName>
         <externalId>false</externalId>
         <label>First Gift Date</label>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <type>Date</type>
     </fields>
     <fields>
@@ -76,17 +122,19 @@
         <externalId>false</externalId>
         <label>Formal Greeting</label>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <type>TextArea</type>
     </fields>
     <fields>
         <fullName>Formula_MailingAddress__c</fullName>
         <externalId>false</externalId>
         <formula>MailingStreet__c &amp; BR() &amp;
-MailingCity__c &amp; &quot;, &quot; &amp; MailingState__c &amp; &quot;  &quot; &amp;  MailingPostalCode__c 
+MailingCity__c &amp; IF(LEN(MailingCity__c)  &gt; 0, &quot;, &quot;, &quot;&quot;) &amp; MailingState__c &amp; &quot;  &quot; &amp;  MailingPostalCode__c 
 &amp; if (LEN(MailingCountry__c)&gt;0,BR()&amp;MailingCountry__c,&quot;&quot;)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Mailing Address</label>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
     </fields>
@@ -95,6 +143,7 @@ MailingCity__c &amp; &quot;, &quot; &amp; MailingState__c &amp; &quot;  &quot; &
         <externalId>false</externalId>
         <label>Household Email</label>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <type>Email</type>
         <unique>false</unique>
     </fields>
@@ -103,6 +152,7 @@ MailingCity__c &amp; &quot;, &quot; &amp; MailingState__c &amp; &quot;  &quot; &
         <externalId>false</externalId>
         <label>Household Phone</label>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <type>Phone</type>
     </fields>
     <fields>
@@ -112,6 +162,7 @@ MailingCity__c &amp; &quot;, &quot; &amp; MailingState__c &amp; &quot;  &quot; &
         <precision>7</precision>
         <required>false</required>
         <scale>0</scale>
+        <trackHistory>false</trackHistory>
         <type>Number</type>
         <unique>false</unique>
     </fields>
@@ -120,6 +171,7 @@ MailingCity__c &amp; &quot;, &quot; &amp; MailingState__c &amp; &quot;  &quot; &
         <externalId>false</externalId>
         <label>Informal Greeting</label>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <type>TextArea</type>
     </fields>
     <fields>
@@ -130,6 +182,7 @@ MailingCity__c &amp; &quot;, &quot; &amp; MailingState__c &amp; &quot;  &quot; &
         <precision>16</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackHistory>false</trackHistory>
         <type>Currency</type>
     </fields>
     <fields>
@@ -137,6 +190,7 @@ MailingCity__c &amp; &quot;, &quot; &amp; MailingState__c &amp; &quot;  &quot; &
         <externalId>false</externalId>
         <label>Last Gift Date</label>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <type>Date</type>
     </fields>
     <fields>
@@ -147,6 +201,7 @@ MailingCity__c &amp; &quot;, &quot; &amp; MailingState__c &amp; &quot;  &quot; &
         <precision>16</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackHistory>false</trackHistory>
         <type>Currency</type>
     </fields>
     <fields>
@@ -154,6 +209,7 @@ MailingCity__c &amp; &quot;, &quot; &amp; MailingState__c &amp; &quot;  &quot; &
         <externalId>false</externalId>
         <label>Last Membership Date</label>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <type>Date</type>
     </fields>
     <fields>
@@ -162,6 +218,7 @@ MailingCity__c &amp; &quot;, &quot; &amp; MailingState__c &amp; &quot;  &quot; &
         <label>Last Membership Level</label>
         <length>255</length>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
     </fields>
@@ -171,6 +228,7 @@ MailingCity__c &amp; &quot;, &quot; &amp; MailingState__c &amp; &quot;  &quot; &
         <label>Last Membership Origin</label>
         <length>255</length>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
     </fields>
@@ -182,6 +240,7 @@ MailingCity__c &amp; &quot;, &quot; &amp; MailingState__c &amp; &quot;  &quot; &
         <precision>16</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackHistory>false</trackHistory>
         <type>Currency</type>
     </fields>
     <fields>
@@ -190,6 +249,7 @@ MailingCity__c &amp; &quot;, &quot; &amp; MailingState__c &amp; &quot;  &quot; &
         <label>Mailing City</label>
         <length>255</length>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
     </fields>
@@ -199,6 +259,7 @@ MailingCity__c &amp; &quot;, &quot; &amp; MailingState__c &amp; &quot;  &quot; &
         <label>Mailing Country</label>
         <length>255</length>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
     </fields>
@@ -208,6 +269,7 @@ MailingCity__c &amp; &quot;, &quot; &amp; MailingState__c &amp; &quot;  &quot; &
         <label>Mailing Zip/Postal Code</label>
         <length>10</length>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
     </fields>
@@ -217,6 +279,7 @@ MailingCity__c &amp; &quot;, &quot; &amp; MailingState__c &amp; &quot;  &quot; &
         <label>Mailing State/Province</label>
         <length>255</length>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
     </fields>
@@ -226,6 +289,7 @@ MailingCity__c &amp; &quot;, &quot; &amp; MailingState__c &amp; &quot;  &quot; &
         <label>Mailing Street</label>
         <length>255</length>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
     </fields>
@@ -234,6 +298,7 @@ MailingCity__c &amp; &quot;, &quot; &amp; MailingState__c &amp; &quot;  &quot; &
         <externalId>false</externalId>
         <label>Membership End Date</label>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <type>Date</type>
     </fields>
     <fields>
@@ -241,6 +306,7 @@ MailingCity__c &amp; &quot;, &quot; &amp; MailingState__c &amp; &quot;  &quot; &
         <externalId>false</externalId>
         <label>Membership Join Date</label>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <type>Date</type>
     </fields>
     <fields>
@@ -252,6 +318,7 @@ MailingCity__c &amp; &quot;, &quot; &amp; MailingState__c &amp; &quot;  &quot; &
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
+        <trackHistory>false</trackHistory>
         <type>Number</type>
         <unique>false</unique>
     </fields>
@@ -259,12 +326,13 @@ MailingCity__c &amp; &quot;, &quot; &amp; MailingState__c &amp; &quot;  &quot; &
         <fullName>Membership_Status__c</fullName>
         <description>Grace period defaults to 30 days. This can be adjusted in the Households Settings tab.</description>
         <externalId>false</externalId>
-        <formula>if (  MembershipEndDate__c  &lt;today(), if ( MembershipEndDate__c  &gt; ( TODAY() - 
+        <formula>if ( MembershipEndDate__c  &lt;today(), if (MembershipEndDate__c  &gt; ( TODAY() - 
 IF(NOT(ISNULL($Setup.Households_Settings__c.Membership_Grace_Period__c)), $Setup.Households_Settings__c.Membership_Grace_Period__c, 30)) , &quot;Grace Period&quot; , &quot;Expired&quot;) , if(isnull(MembershipEndDate__c ),&quot;&quot;,&quot;Current&quot;))</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Current, expired, or grace period</inlineHelpText>
         <label>Membership Status</label>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
     </fields>
@@ -276,6 +344,7 @@ IF(NOT(ISNULL($Setup.Households_Settings__c.Membership_Grace_Period__c)), $Setup
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
+        <trackHistory>false</trackHistory>
         <type>Number</type>
         <unique>false</unique>
     </fields>
@@ -287,6 +356,7 @@ IF(NOT(ISNULL($Setup.Households_Settings__c.Membership_Grace_Period__c)), $Setup
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
+        <trackHistory>false</trackHistory>
         <type>Number</type>
         <unique>false</unique>
     </fields>
@@ -298,6 +368,7 @@ IF(NOT(ISNULL($Setup.Households_Settings__c.Membership_Grace_Period__c)), $Setup
         <precision>16</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackHistory>false</trackHistory>
         <type>Currency</type>
     </fields>
     <fields>
@@ -308,6 +379,7 @@ IF(NOT(ISNULL($Setup.Households_Settings__c.Membership_Grace_Period__c)), $Setup
         <precision>16</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackHistory>false</trackHistory>
         <type>Currency</type>
     </fields>
     <fields>
@@ -318,6 +390,7 @@ IF(NOT(ISNULL($Setup.Households_Settings__c.Membership_Grace_Period__c)), $Setup
         <precision>16</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackHistory>false</trackHistory>
         <type>Currency</type>
     </fields>
     <fields>
@@ -328,6 +401,7 @@ IF(NOT(ISNULL($Setup.Households_Settings__c.Membership_Grace_Period__c)), $Setup
         <precision>16</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackHistory>false</trackHistory>
         <type>Currency</type>
     </fields>
     <fields>
@@ -338,6 +412,7 @@ IF(NOT(ISNULL($Setup.Households_Settings__c.Membership_Grace_Period__c)), $Setup
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
+        <trackHistory>false</trackHistory>
         <type>Number</type>
         <unique>false</unique>
     </fields>
@@ -349,6 +424,7 @@ IF(NOT(ISNULL($Setup.Households_Settings__c.Membership_Grace_Period__c)), $Setup
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
+        <trackHistory>false</trackHistory>
         <type>Number</type>
         <unique>false</unique>
     </fields>
@@ -360,6 +436,7 @@ IF(NOT(ISNULL($Setup.Households_Settings__c.Membership_Grace_Period__c)), $Setup
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
+        <trackHistory>false</trackHistory>
         <type>Number</type>
         <unique>false</unique>
     </fields>
@@ -371,6 +448,7 @@ IF(NOT(ISNULL($Setup.Households_Settings__c.Membership_Grace_Period__c)), $Setup
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
+        <trackHistory>false</trackHistory>
         <type>Number</type>
         <unique>false</unique>
     </fields>
@@ -393,6 +471,7 @@ IF(NOT(ISNULL($Setup.Households_Settings__c.Membership_Grace_Period__c)), $Setup
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
+        <trackHistory>false</trackHistory>
         <type>MultiselectPicklist</type>
         <visibleLines>3</visibleLines>
     </fields>
@@ -404,6 +483,7 @@ IF(NOT(ISNULL($Setup.Households_Settings__c.Membership_Grace_Period__c)), $Setup
         <precision>16</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackHistory>false</trackHistory>
         <type>Currency</type>
     </fields>
     <fields>
@@ -414,6 +494,7 @@ IF(NOT(ISNULL($Setup.Households_Settings__c.Membership_Grace_Period__c)), $Setup
         <precision>16</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackHistory>false</trackHistory>
         <type>Currency</type>
     </fields>
     <fields>
@@ -424,6 +505,7 @@ IF(NOT(ISNULL($Setup.Households_Settings__c.Membership_Grace_Period__c)), $Setup
         <precision>16</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackHistory>false</trackHistory>
         <type>Currency</type>
     </fields>
     <label>Household</label>
@@ -439,11 +521,37 @@ IF(NOT(ISNULL($Setup.Households_Settings__c.Membership_Grace_Period__c)), $Setup
     </listViews>
     <nameField>
         <label>Household Name</label>
+        <trackHistory>false</trackHistory>
         <type>Text</type>
     </nameField>
     <pluralLabel>Households</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts>
+        <customTabListAdditionalFields>HouseholdPhone__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Formula_MailingAddress__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>HouseholdPhone__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Formula_MailingAddress__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>HouseholdPhone__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Formula_MailingAddress__c</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>NAME</searchFilterFields>
+        <searchFilterFields>HouseholdPhone__c</searchFilterFields>
+        <searchFilterFields>HouseholdEmail__c</searchFilterFields>
+        <searchFilterFields>Formula_MailingAddress__c</searchFilterFields>
+        <searchFilterFields>Always_Anonymous__c</searchFilterFields>
+        <searchResultsAdditionalFields>HouseholdPhone__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Formula_MailingAddress__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
+    <webLinks>
+        <fullName>Copy_Household_Address_to_Contacts</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Copy Household Address to Contacts</masterLabel>
+        <openType>sidebar</openType>
+        <page>BTNHouseholdAddressCopy</page>
+        <protected>false</protected>
+    </webLinks>
     <webLinks>
         <fullName>New_Household_Member</fullName>
         <availability>online</availability>

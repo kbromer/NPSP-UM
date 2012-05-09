@@ -61,21 +61,25 @@
     </fields>
     <fields>
         <fullName>ReciprocalRelationship__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Reciprocal Relationship</label>
         <referenceTo>Relationship__c</referenceTo>
         <relationshipLabel>Relationships</relationshipLabel>
         <relationshipName>Relationships</relationshipName>
+        <required>false</required>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
     </fields>
     <fields>
         <fullName>RelatedContact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Related Contact</label>
         <referenceTo>Contact</referenceTo>
         <relationshipLabel>Hidden Relationships List</relationshipLabel>
         <relationshipName>Relationships1</relationshipName>
+        <required>false</required>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
     </fields>

@@ -24,6 +24,10 @@
         <name>Async_Household_Naming__c</name>
     </fields>
     <fields>
+        <label><!-- Batch Size --></label>
+        <name>Batch_Size__c</name>
+    </fields>
+    <fields>
         <help><!-- !!WARNING!!
 DISABLES the HouseholdAfter.trigger (Household__c, after update)
 - checking this box will disable a trigger.  This can cause erratic and unpredictable behavior in your NPSP.  FOR ADVANCED CONSULTANT AND DEVELOPERS ONLY. --></help>
@@ -64,6 +68,11 @@ DISABLES the OpportunityRollup.trigger (Opportunity, after insert, after update,
         <name>Enable_Opp_Rollup_Triggers__c</name>
     </fields>
     <fields>
+        <help><!-- Allows you to rollup closed Opportunity totals based on Opportunity Contact Role Roles.  Soft credit rollups happen only in the nightly batch job, and not on triggers.  They can be manually run using the Opportunity Rollups tab. --></help>
+        <label><!-- Enable Soft Credit Rollups --></label>
+        <name>Enable_Soft_Credit_Rollups__c</name>
+    </fields>
+    <fields>
         <help><!-- Controls if the package automatically checks for new updates and versions. --></help>
         <label><!-- Enable Update Check --></label>
         <name>Enable_Update_Check__c</name>
@@ -87,6 +96,11 @@ DISABLES the OpportunityRollup.trigger (Opportunity, after insert, after update,
         <help><!-- Values for the opportunity Type field to exclude when rolling up contact opportunities. Separate types with semicolons. --></help>
         <label><!-- Opp Types Excluded for Contact Rollup --></label>
         <name>Excluded_Contact_Opp_Types__c</name>
+    </fields>
+    <fields>
+        <help><!-- The NPSP automatically checks for the presence of custom fiscal years, and disabled FY settings if they&apos;re found to avoid errors.  This setting overrides that safety-check for users who have accidentally enabled custom fiscal years. --></help>
+        <label><!-- Force Fiscal Year --></label>
+        <name>Force_Fiscal_Year__c</name>
     </fields>
     <fields>
         <label><!-- Has Package Update --></label>
@@ -143,6 +157,16 @@ DISABLES the OpportunityRollup.trigger (Opportunity, after insert, after update,
         <help><!-- Provide a value for &apos;N day&apos; rollups, where &apos;N&apos; is the number of days from today into the past.  This value defaults to rollup over the past 365 days. --></help>
         <label><!-- Rollup N Day Value --></label>
         <name>Rollup_N_Day_Value__c</name>
+    </fields>
+    <fields>
+        <help><!-- The scheduled job limit used when auto-scheduling nightly rollups. --></help>
+        <label><!-- Schedule Job Limit --></label>
+        <name>Schedule_Job_Limit__c</name>
+    </fields>
+    <fields>
+        <help><!-- List of roles to include in soft credit rollups. --></help>
+        <label><!-- Soft Credit Roles --></label>
+        <name>Soft_Credit_Roles__c</name>
     </fields>
     <fields>
         <help><!-- The number of days between NPSP callouts to check for new versions of this package. The default value is 90 days. --></help>

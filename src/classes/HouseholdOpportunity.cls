@@ -1,3 +1,37 @@
+/*
+    Copyright (c) 2011, Salesforce.com Foundation
+    All rights reserved.
+    
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+    
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of the Salesforce.com Foundation nor the names of
+      its contributors may be used to endorse or promote products derived
+      from this software without specific prior written permission.
+ 
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
+    COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
+    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
+    BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
+    LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+    ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+    POSSIBILITY OF SUCH DAMAGE.
+*/
+/**
+* @author Salesforce.com Foundation
+* @date 2011 (2.0)
+* @description Updates and managed opportunity contact roles for Household members, invoked via opp trigger 
+*/
 public class HouseholdOpportunity {
     public HouseholdOpportunity(){}    
 
@@ -6,8 +40,11 @@ public class HouseholdOpportunity {
         Contacts_and_Orgs_Settings__c ContactsSettings = Constants.getContactsSettings();
         Households_Settings__c currentHouseholdsSettings = Households.getHouseholdsSettings();
         if(currentHouseholdsSettings.Household_Contact_Roles_On__c){
+        
+        
         //get all Opps in the trigger set that are for individual accounts 
-        List<Opportunity> oppsForContactRoles = [select Id, AccountId, account.One2OneContact__c,account.SYSTEMIsIndividual__c from Opportunity where Id IN :opportunities AND account.SYSTEMIsIndividual__c = true];
+        //issue 318, also get Contact ID for Role if available
+        List<Opportunity> oppsForContactRoles = [select Id, Contact_Id_for_Role__c, AccountId, account.One2OneContact__c,account.SYSTEMIsIndividual__c from Opportunity where Id IN :opportunities AND account.SYSTEMIsIndividual__c = true];
         
         if(oppsForContactRoles.size()>0){
             
@@ -28,13 +65,26 @@ public class HouseholdOpportunity {
             
             //loop throught the Opportunities
             for(Opportunity thisOpp : oppsForContactRoles){ 
-                //grab all the contacts off the Accounts
-                contactIds.add(thisOpp.account.One2OneContact__c);
+                
+                
+                //grab all the contacts off the Accounts or via the role lookup
+                if (thisOpp.account.One2OneContact__c != null)
+                    contactIds.add(thisOpp.account.One2OneContact__c);
+                else if (thisOpp.Contact_Id_for_Role__c != null)
+                    contactIds.add(thisOpp.Contact_Id_for_Role__c);
+                    
                 //create the map of contacts to opps
-                if(contactIdToOpps.get(thisOpp.account.One2OneContact__c)==null){
-                    contactIdToOpps.put(thisOpp.account.One2OneContact__c,new List<Opportunity>());                  
+                if(contactIdToOpps.get(thisOpp.account.One2OneContact__c)==null && contactIdToOpps.get(thisOpp.Contact_Id_for_Role__c) == null){
+                    if (thisOpp.account.One2OneContact__c != null)
+                        contactIdToOpps.put(thisOpp.account.One2OneContact__c,new List<Opportunity>());
+                    else if (thisOpp.Contact_Id_for_Role__c != null)
+                        contactIdToOpps.put(thisOpp.Contact_Id_for_Role__c,new List<Opportunity>());                                          
                 }
-                contactIdToOpps.get(thisOpp.account.One2OneContact__c).add(thisOpp);
+                
+                if (thisOpp.account.One2OneContact__c != null)
+                    contactIdToOpps.get(thisOpp.account.One2OneContact__c).add(thisOpp);
+                else if (contactIdToOpps.get(thisOpp.Contact_Id_For_Role__c) != null) 
+                    contactIdToOpps.get(thisOpp.Contact_Id_For_Role__c).add(thisOpp);                                            
             }
             
             //map for contacts to their households because we can't get a query with Opp Id, Contact Id, and Household Id
@@ -44,7 +94,7 @@ public class HouseholdOpportunity {
             individualContacts = [select id,Household__c from Contact where Id IN :contactIds];
             
             //create a map of contacts and thier Household Ids
-            for(Contact myContact : individualContacts){
+            for(Contact myContact : individualContacts){  
                 if(myContact.Household__c!=null){
                     contactIdToHouseholdId.put(myContact.Id,myContact.Household__c);        
                 }       

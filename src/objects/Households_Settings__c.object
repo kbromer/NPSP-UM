@@ -30,6 +30,16 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Batch_Size__c</fullName>
+        <externalId>false</externalId>
+        <label>Batch Size</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>DISABLE_HouseholdAfter_trigger__c</fullName>
         <defaultValue>false</defaultValue>
         <description>DISABLES the HouseholdAfter.trigger (Household__c, after update)</description>
@@ -93,6 +103,14 @@ DISABLES the OpportunityRollup.trigger (Opportunity, after insert, after update,
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Enable_Soft_Credit_Rollups__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Allows you to rollup closed Opportunity totals based on Opportunity Contact Role Roles.  Soft credit rollups happen only in the nightly batch job, and not on triggers.  They can be manually run using the Opportunity Rollups tab.</inlineHelpText>
+        <label>Enable Soft Credit Rollups</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Enable_Update_Check__c</fullName>
         <defaultValue>false</defaultValue>
         <description>Controls if the package automatically checks for new updates and versions.</description>
@@ -140,6 +158,15 @@ DISABLES the OpportunityRollup.trigger (Opportunity, after insert, after update,
         <required>false</required>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Force_Fiscal_Year__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>The NPSP automatically checks for the presence of custom fiscal years, and disabled FY settings if they&apos;re found to avoid errors.  This setting overrides that safety-check for users who have accidentally enabled custom fiscal years.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The NPSP automatically checks for the presence of custom fiscal years, and disabled FY settings if they&apos;re found to avoid errors.  This setting overrides that safety-check for users who have accidentally enabled custom fiscal years.</inlineHelpText>
+        <label>Force Fiscal Year</label>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Has_Package_Update__c</fullName>
@@ -254,6 +281,28 @@ DISABLES the OpportunityRollup.trigger (Opportunity, after insert, after update,
         <required>false</required>
         <scale>0</scale>
         <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Schedule_Job_Limit__c</fullName>
+        <defaultValue>25</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>The scheduled job limit used when auto-scheduling nightly rollups.</inlineHelpText>
+        <label>Schedule Job Limit</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Soft_Credit_Roles__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>List of roles to include in soft credit rollups.</inlineHelpText>
+        <label>Soft Credit Roles</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>

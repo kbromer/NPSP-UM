@@ -1,53 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>AccountViewOverride</members>
-        <members>Affiliations</members>
-        <members>BATCH_HouseholdNaming</members>
-        <members>BATCH_OppRollup</members>
-        <members>CTRL_AddressCopyBtn</members>
-        <members>CTRL_BatchJobsProgress</members>
-        <members>CTRL_CampaignDedupeBtn</members>
-        <members>CTRL_OpportunityRollup</members>
-        <members>Constants</members>
-        <members>ContactDeleteOverride</members>
-        <members>ContactDonationCredit_EXT</members>
-        <members>ContactMerge</members>
-        <members>ContactMergeController</members>
-        <members>DonationNewMatching</members>
-        <members>HouseholdNaming</members>
-        <members>HouseholdOpportunity</members>
-        <members>HouseholdProcessControl</members>
-        <members>HouseholdTransactionHistory_EXT</members>
-        <members>Households</members>
-        <members>IndividualAccounts</members>
-        <members>IndividualAccounts_Utils</members>
-        <members>LeadConvertOverride</members>
-        <members>NPSPPkgVersionCheck</members>
-        <members>OpportunityContactRoles</members>
-        <members>OpportunityRollups</members>
-        <members>RecordTypes</members>
-        <members>RecurringDonations</members>
-        <members>RecurringDonations_TEST</members>
-        <members>Relationships</members>
-        <members>Relationships_Utils</members>
-        <members>SCHED_OppRollup</members>
-        <members>TEST_AccountViewOverride</members>
-        <members>TEST_Affiliations</members>
-        <members>TEST_ContactMergeController</members>
-        <members>TEST_HouseholdOpportunity</members>
-        <members>TEST_HouseholdOpportunity_bulk</members>
-        <members>TEST_Households</members>
-        <members>TEST_IndividualAccounts</members>
-        <members>TEST_LeadConvertOverride</members>
-        <members>TEST_OpportunityContactRoles</members>
-        <members>TEST_Relationships</members>
-        <members>UnitTestData</members>
-        <members>affiliationsSettings</members>
-        <members>bulkTests</members>
-        <members>contactsSettings</members>
-        <members>householdsSettings</members>
-        <members>userRollupSettings</members>
+        <members>*</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -55,17 +9,7 @@
         <name>ApexComponent</name>
     </types>
     <types>
-        <members>ContactDonationCredit</members>
-        <members>ContactMerge</members>
-        <members>ContactNewOverride</members>
-        <members>accountViewOverride</members>
-        <members>affiliationsSettings</members>
-        <members>contactDeleteOverride</members>
-        <members>contactsSettings</members>
-        <members>householdsSettings</members>
-        <members>leadConvertOverride</members>
-        <members>opportunityRollup</members>
-        <members>userRollupSettings</members>
+        <members>*</members>
         <name>ApexPage</name>
     </types>
     <types>
@@ -77,22 +21,50 @@
         <name>CustomApplication</name>
     </types>
     <types>
+        <members>AccountContactRole.Role</members>
+        <members>Asset.ProductFamily</members>
+        <members>Asset.Status</members>
+        <members>CampaignMember.LeadSource</members>
+        <members>CampaignMember.Salutation</members>
+        <members>CampaignMember.Status</members>
+        <members>CaseContactRole.Role</members>
+        <members>Contract.Status</members>
+        <members>ContractContactRole.Role</members>
+        <members>Event.Subject</members>
+        <members>Event.Type</members>
+        <members>Idea.Categories</members>
+        <members>Idea.Status</members>
+        <members>PartnerRole.ReverseRole</members>
+        <members>Product2.Family</members>
+        <members>Solution.Status</members>
+        <members>Task.Priority</members>
+        <members>Task.Status</members>
+        <members>Task.Subject</members>
+        <members>Task.Type</members>
+        <name>CustomField</name>
+    </types>
+    <types>
         <members>*</members>
         <name>CustomLabels</name>
     </types>
-    <types>
+    <types>        
         <members>Account</members>
-        <members>Affiliation__c</members>
-        <members>Affiliations_Settings__c</members>
         <members>Campaign</members>
         <members>Contact</members>
-        <members>Contacts_And_Orgs_Settings__c</members>
-        <members>Household__c</members>
-        <members>Households_Settings__c</members>
         <members>Lead</members>
         <members>Opportunity</members>
-        <members>OpportunityContactRole</members>
+        <members>Affiliation__c</members>
+        <members>Affiliations_Settings__c</members>
+        <members>Contacts_And_Orgs_Settings__c</members>
+        <members>Custom_Field_Mapping__c</members>
+        <members>Custom_Installment_Settings__c</members>
+        <members>Household__c</members>
+        <members>Households_Settings__c</members>
+        <members>OppPayment__c</members>
+        <members>Payment_Field_Mapping_Settings__c</members>
         <members>Recurring_Donation__c</members>
+        <members>Recurring_Donations_Error_Queue__c</members>
+        <members>Recurring_Donations_Settings__c</members>
         <members>Relationship__c</members>
         <members>User_Rollup_Field_Settings__c</members>
         <name>CustomObject</name>
@@ -118,7 +90,7 @@
         <name>DataCategoryGroup</name>
     </types>
     <types>
-        <members>*</members>     
+        <members>*</members>
         <name>EmailTemplate</name>
     </types>
     <types>
@@ -127,22 +99,31 @@
     </types>
     <types>
         <members>*</members>
-        <name>HomePageLayout</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>Layout</name>
-    </types>
-    <types>
-        <members>*</members>
         <name>Letterhead</name>
     </types>
     <types>
-        <members>Admin</members>
-        <name>Profile</name>
+        <members>Activity.AllActivities</members>
+        <members>Activity.MyActivities</members>
+        <members>Activity.TodaysTasks</members>
+        <members>Activity.UpcomingEvents</members>
+        <members>Asset.AllAssets</members>
+        <members>Contract.AllActivatedContracts</members>
+        <members>Contract.AllContracts</members>
+        <members>Contract.AllDraftContracts</members>
+        <members>Contract.AllInApprovalContracts</members>
+        <members>Contract.MyActivatedContracts</members>
+        <members>Contract.MyDraftContracts</members>
+        <members>Contract.MyInApprovalContracts</members>
+        <members>Product2.AllProducts</members>
+        <members>Solution.AllReviewedSolutions</members>
+        <members>Solution.AllUnreviewedSolutions</members>
+        <members>User.ActiveUsers</members>
+        <members>User.AdminUsers</members>
+        <members>User.AllUsers</members>
+        <name>ListView</name>
     </types>
     <types>
-        <members>ApexDevNet</members>
+        <members>Foundation</members>
         <members>Salesforce_Foundation</members>
         <name>RemoteSiteSetting</name>
     </types>
@@ -163,7 +144,6 @@
         <members>Nonprofit_Edition_Reports/Organization_LYBUNT_Report</members>
         <members>Nonprofit_Edition_Reports/Organization_SYBUNT_Report</members>
         <members>Nonprofit_Edition_Reports/Organziation_Donations_Closed_Won</members>
-        <members>unfiled$public</members>
         <name>Report</name>
     </types>
     <types>
@@ -179,12 +159,8 @@
         <name>StaticResource</name>
     </types>
     <types>
-        <members>Account</members>
-        <members>Affiliation__c</members>
         <members>Contact</members>
-        <members>Lead</members>
-        <members>Opportunity</members>
         <name>Workflow</name>
     </types>
-    <version>20.0</version>
+    <version>23.0</version>
 </Package>

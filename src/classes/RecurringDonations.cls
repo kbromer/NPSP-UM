@@ -1,6 +1,6 @@
 /*
     Copyright (c) 2012, Salesforce.com Foundation
-    All rights reserved.
+    All rights reserved. 
     
     Redistribution and use in source and binary forms, with or without
     modification, are permitted provided that the following conditions are met:
@@ -41,6 +41,7 @@ global with sharing class RecurringDonations {
     public static Recurring_Donations_Settings__c recurringDonationsSettings;    
     public static map<id, Recurring_Donation__c> recurringDonationMap;
     public static map<string, Custom_Field_Mapping__c> customFieldMappingSettings = new map<string, Custom_Field_Mapping__c>();
+    public static boolean RecordTypeValid;
     
     /*** Constructors ***/ 
            
@@ -66,7 +67,7 @@ global with sharing class RecurringDonations {
                                                                                      Installment_Period__c, Installments__c,
                                                                                      Last_Payment_Date__c, Open_Ended_Status__c,
                                                                                      Schedule_Type__c, Total_Paid_Installments__c,
-                                                                                     Donor_Name__c
+                                                                                     Donor_Name__c, OwnerId
                                                                                   from Recurring_Donation__c 
                                                                                   where Open_Ended_Status__c = :openLabel
                                                                                   and id IN :RDids]);
@@ -162,7 +163,7 @@ global with sharing class RecurringDonations {
                                                                                      Installment_Period__c, Installments__c,
                                                                                      Last_Payment_Date__c, Open_Ended_Status__c,
                                                                                      Schedule_Type__c, Total_Paid_Installments__c,
-                                                                                     Donor_Name__c
+                                                                                     Donor_Name__c, OwnerId
                                                                                   from Recurring_Donation__c 
                                                                                   where Open_Ended_Status__c = :openLabel
                                                                                   and id IN :RDids]);
@@ -237,7 +238,7 @@ global with sharing class RecurringDonations {
     	                                       Recurring_Donation_Campaign__c, Paid_Amount__c, Organization__c,
     	                                       Open_Ended_Status__c, Next_Payment_Date__c, Last_Payment_Date__c,
     	                                       Installments__c, Installment_Period__c, Installment_Amount__c,
-    	                                       Donor_Name__c, Date_Established__c, Contact__c, Amount__c, Name    	                                       
+    	                                       Donor_Name__c, Date_Established__c, Contact__c, Amount__c, Name, OwnerId  	                                       
     	                                       from Recurring_Donation__c];
     	
         insertOppsOnRecurringDonationInsert(reclist);
@@ -354,10 +355,11 @@ global with sharing class RecurringDonations {
                 
                     opp.StageName = System.Label.RecurringDonationStageName;
                     opp.Recurring_Donation__c = r.Id;
+                    opp.OwnerId = r.OwnerId;
                     if (r.Recurring_Donation_Campaign__c != null && (rds.Add_Campaign_to_All_Opportunites__c || j < 1)){
                        opp.CampaignId = r.Recurring_Donation_Campaign__c;
                     }                                        
-                    if (rds.Record_Type__c != null){
+                    if (rds.Record_Type__c != null && recordTypeIsValid()){
                     	opp.RecordTypeID = rds.Record_Type__c;
                     }                    
                     
@@ -437,11 +439,12 @@ global with sharing class RecurringDonations {
                         oName += o.CloseDate.format();
                         o.Name = oName;
                         
-                        if (rds.Record_Type__c != null){
+                        if (rds.Record_Type__c != null && recordTypeIsValid()){
                             o.RecordTypeID = rds.Record_Type__c;
                         }                
                         o.StageName = System.Label.RecurringDonationStageName;
                         o.Recurring_Donation__c = r.Id;
+                        o.OwnerId = r.OwnerId;
                         if (r.Recurring_Donation_Campaign__c != null && (rds.Add_Campaign_to_All_Opportunites__c || rdcounter == 1)){
                             o.CampaignId = r.Recurring_Donation_Campaign__c;
                         }   
@@ -568,7 +571,7 @@ global with sharing class RecurringDonations {
                                                                                      Installment_Period__c, Installments__c,
                                                                                      Last_Payment_Date__c, Open_Ended_Status__c,
                                                                                      Schedule_Type__c, Total_Paid_Installments__c,
-                                                                                     Donor_Name__c
+                                                                                     Donor_Name__c, OwnerId
                                                                                   from Recurring_Donation__c 
                                                                                   where Open_Ended_Status__c = :openLabel 
                                                                                   and id IN :recIDs]);        
@@ -626,6 +629,7 @@ global with sharing class RecurringDonations {
                 oName += ' ' + iNumber + ' ';
                 oName += o.CloseDate.format();
                 o.Name = oName;
+                o.OwnerId = rdMap.get(RDid).OwnerId; 
                 
                 //now append appropriate amount to this date
                 PaymentDate = getNextDate(PaymentDate, RDMap.get(RDid).Installment_Period__c);
@@ -670,7 +674,8 @@ global with sharing class RecurringDonations {
                 if (r.Amount__c != oldRD.Amount__c ||
                     r.Recurring_Donation_Campaign__c != oldRD.Recurring_Donation_Campaign__c ||
                     r.Organization__c != oldRD.Organization__c ||
-                    r.Next_Payment_Date__c != oldRD.Next_Payment_Date__c                    
+                    r.Next_Payment_Date__c != oldRD.Next_Payment_Date__c ||
+                    r.OwnerId != oldRD.OwnerId                    
                     ){
                     reevaluateopps.add(r.id);
                 }
@@ -786,50 +791,55 @@ global with sharing class RecurringDonations {
         	
         	//only proceed if there are some opps, otherwise we need to start over from scratch	
         	if (oppCountMap.containsKey(rd.id)){
-        	    integer oppCounter = oppCountMap.get(rd.id) + 1;                    
-                           
-                if (system.today().addMonths(forecast_months) > lastOppMap.get(rd.id)){
-                    date oppclosedate = lastOppMap.get(rd.id);
-                    do{
-                        Opportunity o = new Opportunity();
+        	    integer oppCounter = oppCountMap.get(rd.id) + 1;      
+                date oppclosedate = getNextDate(lastOppMap.get(rd.id), rd.Installment_Period__c);
+                
+                while(oppclosedate < system.today().addMonths(forecast_months))
+                {
+                    Opportunity o = new Opportunity();
 
-                        //multicurrency?
-                        if(RDCurrencyField != null){o.put(OppCurrencyField,rd.get(RDCurrencyField));}
-                    
-                        //account or contact?
-                        if (rd.Organization__c != null){
-                    	   o.AccountId = rd.Organization__c;
+                    //multicurrency?
+                    if(RDCurrencyField != null){o.put(OppCurrencyField,rd.get(RDCurrencyField));}
+               
+                    //account or contact?
+                    if (rd.Organization__c != null){
+                        o.AccountId = rd.Organization__c;
+                    }
+                    else if (contactMap.containsKey(rd.Contact__c)){
+                        Contact c = contactMap.get(rd.Contact__c);
+                        o.AccountId = c.AccountId;
+                        if (ConIDForRole != null){
+                            o.put('npe01__Contact_Id_For_Role__c', (string)c.id);
                         }
-                        else if (contactMap.containsKey(rd.Contact__c)){
-                            Contact c = contactMap.get(rd.Contact__c);
-                            o.AccountId = c.AccountId;
-                            if (ConIDForRole != null){
-                                o.put('npe01__Contact_Id_For_Role__c', (string)c.id);
-                            }
-                        }                    
+                    }                    
                     
-                        oppclosedate = getNextDate(oppclosedate, rd.Installment_Period__c);
-                        o.CloseDate = oppclosedate;                                                                            	           
-                	    string oName = rd.Donor_Name__c + ' ' + System.Label.RecurringDonationPrefix +
-                        ' (' + string.valueOf(oppCounter) + ') ' + o.CloseDate.format();
+                    o.CloseDate = oppclosedate;                                                                            	           
+                	string oName = rd.Donor_Name__c + ' ' + System.Label.RecurringDonationPrefix +
+                    ' (' + string.valueOf(oppCounter) + ') ' + o.CloseDate.format();
                     
-                        o.Name = oName;
-                        o.Amount = rd.Amount__c;
-                        o.StageName = System.Label.RecurringDonationStageName;                    
-                        o.Recurring_Donation__c = rd.Id;                    
-                        //evaluate any custom field mappings
-                        for (string s : customFieldMappingSettings.keySet()){
-                            Custom_Field_Mapping__c cfm = customFieldMappingSettings.get(s);
-                            o.put(cfm.Opportunity_Field__c, rd.get(cfm.Recurring_Donation_Field__c));
-                        }
-                    
-                        if (rd.Recurring_Donation_Campaign__c != null && (rds.Add_Campaign_to_All_Opportunites__c || oppCounter == 1)){
-                            o.CampaignId = rd.Recurring_Donation_Campaign__c;
-                        }
-                    
-                        oppCounter++;
-                        oppInsertList.add(o);                	
-                    }while(oppclosedate < system.today().addMonths(forecast_months));
+                    o.Name = oName;
+                    o.Amount = rd.Amount__c;
+                    o.StageName = System.Label.RecurringDonationStageName;                    
+                    o.Recurring_Donation__c = rd.Id;        
+                    o.OwnerId = rd.OwnerId; 
+                                    
+                    //evaluate any custom field mappings
+                    for (string s : customFieldMappingSettings.keySet()){
+                        Custom_Field_Mapping__c cfm = customFieldMappingSettings.get(s);
+                        o.put(cfm.Opportunity_Field__c, rd.get(cfm.Recurring_Donation_Field__c));
+                    }
+                        
+                    if (rds.Record_Type__c != null && recordTypeIsValid()){
+                        o.RecordTypeID = rds.Record_Type__c;
+                    }    
+                
+                    if (rd.Recurring_Donation_Campaign__c != null && (rds.Add_Campaign_to_All_Opportunites__c || oppCounter == 1)){
+                        o.CampaignId = rd.Recurring_Donation_Campaign__c;
+                    }
+                
+                    oppCounter++;
+                    oppInsertList.add(o);  
+                    oppclosedate = getNextDate(oppclosedate, rd.Installment_Period__c);
                 }
         	}
         	else{
@@ -989,5 +999,19 @@ global with sharing class RecurringDonations {
             }                
         }
     	return CalcDate;
+    }
+    
+    private static boolean recordTypeIsValid(){
+    	if (RecordTypeValid == null){
+    		list<RecordType> rts = new list<RecordType>();
+    		rts = [select id from RecordType where id = :recurringDonationsSettings.Record_Type__c];
+    		if(!rts.isEmpty()){
+    			RecordTypeValid = true;
+    		}
+    		else{
+    			RecordTypeValid = false;
+    		}    		
+    	}
+    	return RecordTypeValid;
     }
 }

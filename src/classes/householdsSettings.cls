@@ -1,13 +1,49 @@
-public with sharing class householdsSettings {
+/*
+    Copyright (c) 2011, Salesforce.com Foundation
+    All rights reserved.
     
-    public Households_Settings__c pageSettings = new Households_Settings__c();
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+    
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of the Salesforce.com Foundation nor the names of
+      its contributors may be used to endorse or promote products derived
+      from this software without specific prior written permission.
+ 
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
+    COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
+    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
+    BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
+    LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+    ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+    POSSIBILITY OF SUCH DAMAGE.
+*/
+/**
+* @author Salesforce.com Foundation
+* @date 2011 (2.0)
+* @description The controller for the Household Settings VF page 
+*/
+public with sharing class householdsSettings {  
+    
+    public Households_Settings__c pageSettings = getSettings();
     public boolean runningBatch {get; set;}
+    public string activeTab {get; set;}
+    public boolean editRollupSettingsTab{get; set;}
+    public boolean editHouseholdSettingsTab{get; set;}
+    public boolean hasErrors{get; set;}
+    public List<Opportunity_Rollup_Error__c> errorList{get; set;}
      
      /********Vars for PKG Update Info *************/
-    public string getMyVersion(){return string.valueof('1.0.5');}
-    //Package.Version.Request is not supported in an unmanaged environment
-    //public string getMyVersion(){return string.valueof(Package.Version.Request);}
-    
+    public string getMyVersion(){return string.valueof(/*Package.Version.Request*/'');}
     public string getMaxVersion(){return pageSettings.Max_Package_Version__c;}
     public string getUpdateURL(){return pageSettings.Package_Update_URL__c;}
     public string getLastUpdate(){      
@@ -30,14 +66,28 @@ public with sharing class householdsSettings {
     }
     /*********************************************/
     
-    
     public householdsSettings(){
         acctRTs = new List<string>();
         acctTypes = new List<string>();
         contactRTs = new List<string>();
         contactTypes = new List<string>();
+        scContactRoles = new List<string>();
         if (runningbatch == null)
             runningbatch = false;
+        activeTab = 'HouseholdSettingsTab'; 
+        editHouseholdSettingsTab = false;
+        editRollupSettingsTab = false;   
+        
+        //retrieve errors, if any
+        errorList = Opportunity_Rollup_Error__c.getAll().values();
+        if (!errorList.isEmpty()){
+        	hasErrors = true;        	 
+        	ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.WARNING, system.label.RollupErrorMessage);
+        	ApexPages.addMessage(myMsg);        	
+        }   
+        else{
+        	hasErrors = false;
+        }             
     }
     
     public Households_Settings__c getSettings() {
@@ -90,6 +140,9 @@ public with sharing class householdsSettings {
         	contactRTs = pageSettings.Excluded_Contact_Opp_Rectypes__c.split(';',0);
         }
         
+        if (pageSettings.Soft_Credit_Roles__c != null){
+        	scContactRoles = pageSettings.Soft_Credit_Roles__c.split(';',0);
+        }        
         
         if (pr != null){
         	pr.setRedirect(true);
@@ -103,6 +156,7 @@ public with sharing class householdsSettings {
     public List<String> acctTypes {get;set;}
     public List<String> contactRTs {get;set;}
     public List<String> contactTypes {get;set;}
+    public List<String> scContactRoles {get;set;}
     
     public List<SelectOption> getcontactRoles() {
     
@@ -126,7 +180,7 @@ public with sharing class householdsSettings {
     	PageReference pr = null;
     	
         if(pageSettings.Enable_Opp_Rollup_Triggers__c){
-            Integer scheduledJobLimit = 10;
+            Integer scheduledJobLimit = (integer)pageSettings.Schedule_Job_Limit__c;
             boolean alreadyScheduled = false;            
             
             List<cronTrigger> scheduledRollups = [SELECT Id FROM cronTrigger limit :scheduledJobLimit];
@@ -236,6 +290,13 @@ public with sharing class householdsSettings {
         }
         if (s != '') pageSettings.Excluded_Contact_Opp_Rectypes__c = s.substring(1);
         
+        s='';
+        for (String scocr : scContactRoles){
+        	if (scocr != null && scocr != ''){
+        		s+= ';' + scocr;
+        	}        	
+        }
+        if (s!='')pageSettings.Soft_Credit_Roles__c = s.substring(1);
         
         s = '';
         for (String tp : acctTypes) {
@@ -252,6 +313,8 @@ public with sharing class householdsSettings {
         if (s != '') pageSettings.Excluded_Contact_Opp_Types__c = s.substring(1);
         update pageSettings;
         showMsg('Households Settings updated',ApexPages.Severity.INFO);
+        editHouseholdSettingsTab = false;
+        editRollupSettingsTab = false;
         //schedule the rollup if need be
         scheduleRollups();
     }
@@ -265,20 +328,32 @@ public with sharing class householdsSettings {
     	//call advanced rolup batch process
     	HouseholdNaming hn = new Householdnaming();
     	hn.ActivateAdvancedGreetings(false);
-    	
-    	/*
-    	//refresh page
-    	PageReference pr;// = new PageReference();
-        pr.setRedirect(true);
-        return pr;
-    	*/
-    	
     }
     
     public void checkForUpdates(){
-        NPSPPkgVersionCheck npvc = new NPSPPkgVersionCheck('npo02');        
-        npvc.NPSPCheckVersion(true);
+      //  NPSPPkgVersionCheck npvc = new NPSPPkgVersionCheck('npo02');        
+       // npvc.NPSPCheckVersion(true);
     }
+    public pageReference cancel(){
+        editHouseholdSettingsTab = false;
+        editRollupSettingsTab = false;
+        return null;
+    }
+    public pageReference editHouseholdSettings(){
+        editHouseholdSettingsTab = true;
+        editRollupSettingsTab = false;
+        return null;    
+    }   
+    public pageReference editRollupSettings(){
+        editHouseholdSettingsTab = false;
+        editRollupSettingsTab = true;
+        return null;
+    }    
+    public pageReference deleteErrors(){
+    	delete [select id from Opportunity_Rollup_Error__c];
+    	hasErrors = false;
+    	return null;
+    }    
     
      public static testMethod void TEST_householdsSettings() {
         
@@ -311,37 +386,10 @@ public with sharing class householdsSettings {
         controller.acctTypes.add('In-Kind');
         controller.contactTypes.add('In-Kind');
         controller.pageSettings.Enable_Opp_Rollup_Triggers__c = true;
-        controller.updateSettings();
-                
-    }
-    /*
-	static testMethod void testFirstRun()
-    {
-    	//get rid of settings
-    	delete [select id from Households_Settings__c limit 100];
-    	//get the default value
-		String defaultValue;
-        boolean aDefaultIsSelected = false;
-        Schema.DescribeFieldResult F = Schema.sObjectType.Contact.fields.SystemHouseholdProcessor__c; 
-        List<Schema.PicklistEntry> P = F.getPicklistValues();
-        for(Schema.PicklistEntry pe : P){
-            if (pe.isDefaultValue()){
-                    defaultValue = pe.getValue();
-                    break;
-            }
-        }
-         Test.setCurrentPageReference(new PageReference('Page.contactSettings'));
-        
-        //pass the controller into the extension
-        householdsSettings controller = new householdsSettings(); 
-        controller.getSettingsFirstTime();
-		if(defaultValue!=null){
-			system.assertEquals(controller.pageSettings.Household_Rules__c,defaultValue);
-		} else {
-			system.assertEquals(controller.pageSettings.Household_Rules__c,Households.NO_HOUSEHOLDS_PROCESSOR);
-		}
-
-    }
-    */
-    
+        controller.editHouseholdSettings();
+        controller.editRollupSettings();
+        controller.cancel();
+        controller.deleteErrors();        
+        controller.updateSettings();                
+    }    
 }

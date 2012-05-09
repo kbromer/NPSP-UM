@@ -27,6 +27,11 @@
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
     POSSIBILITY OF SUCH DAMAGE.
 */
+/**
+* @author Salesforce.com Foundation
+* @date 2011 (2.3)
+* @description The controller for the VF page invoked by using the campaign dedupe button from the campaign record 
+*/
 public without sharing class CTRL_CampaignDedupeBtn {
     
     //HH campagin deduplication. Based on base classes by Evan Callahan and Kevin Bromer

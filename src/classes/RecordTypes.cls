@@ -1,3 +1,9 @@
+/**
+* @author Evan Callahan
+* @date 2010 
+* @description Provides recordtype wrapper for easy access in other codeblocks 
+*/
+
 global class RecordTypes {
 /*-----------------------------------------------------------------------------------------------
 * Written by Evan Callahan, copyright (c) 2010 Groundwire

@@ -27,28 +27,32 @@
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
     POSSIBILITY OF SUCH DAMAGE.
 */
+/**
+* @author Salesforce.com Foundation
+* @date 2011 (2.3)
+* @description Class provides a batchable wrapper for Household naming functionality. Generally called only on initial activation.
+*/
 global class BATCH_HouseholdNaming implements Database.Batchable<SObject> {
 // batch apex class to name households in existing orgs
     
     public String query {get; set;}
     public boolean isActivation {get; set;} 
     
-    // constructors
+    /** @description constructor for the class */
     public BATCH_HouseholdNaming(string q, boolean isA) {    	   
     	isActivation = isA;    	
         query = q; 
     }
-    //default old constructor to skip activation sequence
-    //if called from elsewhere
+    /** @description default old constructor to skip activation sequence */    
     public BATCH_HouseholdNaming(string q) {
     	query = q;
     	isActivation = false;    	
     }    
-    
+    /** @description Start method of batch class */
     global database.Querylocator start(Database.BatchableContext bc) {
         return Database.getQueryLocator(query);      
     }
-    
+    /** @description The execution logic for the batch. Includes seperate paths for initial activations */
     global public void execute(Database.BatchableContext bc, Sobject[] result) {
         // run rollups for this batch  
         HouseholdProcessControl.inFutureContext = true;     
@@ -137,10 +141,10 @@ global class BATCH_HouseholdNaming implements Database.Batchable<SObject> {
         
         hn.UpdateNames(hhidlist);
     }
-
+    /** @description Finish method for the batchable class. */
     global void finish(Database.BatchableContext bc) {
     }
-
+    /** @description Test method for batch */
     public static testMethod void testBatch() {
         
         Households_Settings__c householdSettingsForTests = Households.getHouseholdsSettingsForTests(
@@ -187,8 +191,4 @@ global class BATCH_HouseholdNaming implements Database.Batchable<SObject> {
             id batchProcessId = database.executeBatch(batch);
         Test.StopTest();
     }
-    
-
-
-
 }

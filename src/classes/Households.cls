@@ -27,6 +27,11 @@
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
     POSSIBILITY OF SUCH DAMAGE.
 */
+/**
+* @author Salesforce.com Foundation
+* @date 2011 (2.0)
+* @description Handles creation, deleting and moving of Households between Contacts 
+*/
 global without sharing class Households { 
     
     //One-to-One value for system processor field
@@ -505,6 +510,7 @@ global without sharing class Households {
                 householdsSettings.Advanced_Household_Naming__c = false;
                 householdsSettings.Async_Household_Naming__c = false;
                 householdsSettings.Setupownerid = UserInfo.getOrganizationId();
+                householdsSettings.Schedule_Job_Limit__c = 25;
                 insert householdsSettings;
             }
         }
@@ -531,7 +537,9 @@ global without sharing class Households {
             Membership_Grace_Period__c = mySettings.Membership_Grace_Period__c,
             Rollup_N_Day_Value__c = mySettings.Rollup_N_Day_Value__c, 
             Membership_Record_Types__c = mySettings.Membership_Record_Types__c,
-            Advanced_Household_Naming__c = true
+            Advanced_Household_Naming__c = mySettings.Advanced_Household_Naming__c,
+            Enable_Soft_Credit_Rollups__c = mySettings.Enable_Soft_Credit_Rollups__c,
+            Soft_Credit_Roles__c = mySettings.Soft_Credit_Roles__c            
             );
         insert householdsSettings;
             

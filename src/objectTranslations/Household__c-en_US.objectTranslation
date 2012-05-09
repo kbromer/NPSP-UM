@@ -21,6 +21,14 @@
         <name>AverageAmount__c</name>
     </fields>
     <fields>
+        <label><!-- Best Gift Year Total --></label>
+        <name>Best_Gift_Year_Total__c</name>
+    </fields>
+    <fields>
+        <label><!-- Best Gift Year --></label>
+        <name>Best_Gift_Year__c</name>
+    </fields>
+    <fields>
         <label><!-- First Gift Date --></label>
         <name>FirstCloseDate__c</name>
     </fields>
@@ -182,6 +190,10 @@
         <name>TotalOppAmount__c</name>
     </fields>
     <startsWith>Consonant</startsWith>
+    <webLinks>
+        <label><!-- Copy_Household_Address_to_Contacts --></label>
+        <name>Copy_Household_Address_to_Contacts</name>
+    </webLinks>
     <webLinks>
         <label><!-- New_Household_Member --></label>
         <name>New_Household_Member</name>

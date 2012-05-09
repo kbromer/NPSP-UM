@@ -22,6 +22,26 @@
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Best_Gift_Year_Total__c</fullName>
+        <externalId>false</externalId>
+        <label>Best Gift Year Total</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Best_Gift_Year__c</fullName>
+        <externalId>false</externalId>
+        <label>Best Gift Year</label>
+        <length>4</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Donor_This_Year__c</fullName>
         <description>yes/no formula</description>
         <externalId>false</externalId>
@@ -105,6 +125,17 @@ if(ISPICKVAL(Secondary_Address_Type__c,&quot;Home&quot;),
         <label>Home Address</label>
         <required>false</required>
         <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Household_Naming_Order__c</fullName>
+        <externalId>false</externalId>
+        <label>Household Naming Order</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Number</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -214,7 +245,6 @@ if(ISPICKVAL(Secondary_Address_Type__c,&quot;Home&quot;),
 Account.LastDonationDate__c,
 null
 )</formula>
-        <inlineHelpText>WARNING - This field may not accurately reflect the donation history. Please use the Last Gift Date field instead.</inlineHelpText>
         <label>Last Transaction Date</label>
         <required>false</required>
         <type>Date</type>
@@ -277,7 +307,6 @@ Account.LifetimeDonationHistory_Amount__c,
 null
 )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>WARNING- This field may not accurately reflect donation histories. Please use the Total Amount field on the Contact record instead.</inlineHelpText>
         <label>Lifetime Transaction Total</label>
         <precision>18</precision>
         <required>false</required>
@@ -668,6 +697,50 @@ if(ISPICKVAL(Secondary_Address_Type__c,&quot;Other&quot;),
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Soft_Credit_Last_Year__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Total soft credit amount last year.</inlineHelpText>
+        <label>Soft Credit Last Year</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Soft_Credit_This_Year__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Total soft credit amount this year</inlineHelpText>
+        <label>Soft Credit This Year</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Soft_Credit_Total__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Total amount in soft credits for this Contact&apos;s lifetime. Defined in the Household Settings tab.</inlineHelpText>
+        <label>Soft Credit Total</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Soft_Credit_Two_Years_Ago__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Total soft credit amount two years ago.</inlineHelpText>
+        <label>Soft Credit Two Years Ago</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>SystemAccountProcessor__c</fullName>
         <externalId>false</externalId>
         <label>_SYSTEM: ACCOUNT PROCESSOR</label>
@@ -701,7 +774,7 @@ if(ISPICKVAL(Secondary_Address_Type__c,&quot;Other&quot;),
             </picklistValues>
             <picklistValues>
                 <fullName>No Contacts</fullName>
-                <default>true</default>
+                <default>false</default>
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
@@ -857,6 +930,12 @@ if(ISPICKVAL(Secondary_Address_Type__c,&quot;Work&quot;),
         <label>New This Week</label>
     </listViews>
     <validationRules>
+        <fullName>BADRULE</fullName>
+        <active>false</active>
+        <errorConditionFormula>NOT(ISNULL(AssistantPhone ))</errorConditionFormula>
+        <errorMessage>OOPS!</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>Populated_Email_Field_Warning</fullName>
         <active>true</active>
         <description>This validation rule is only necessary for organizations that have data in the Email field before installing this package.  You don&apos;t need for this validation rule if you move all of the data from the Email field in to the NEW Work Email field.</description>
@@ -931,4 +1010,15 @@ LEN( WorkPhone__c )&gt;0
         <errorDisplayField>PreferredPhone__c</errorDisplayField>
         <errorMessage>You must select a Preferred Phone</errorMessage>
     </validationRules>
+    <webLinks>
+        <fullName>Copy_Address_to_Household</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Copy Address to Household</masterLabel>
+        <openType>sidebar</openType>
+        <page>BTNContactAddressCopy</page>
+        <protected>false</protected>
+    </webLinks>
 </CustomObject>

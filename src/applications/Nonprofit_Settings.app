@@ -8,5 +8,8 @@
     <tab>Affiliations_Settings</tab>
     <tab>Opportunity_Rollups</tab>
     <tab>User_Rollups</tab>
+    <tab>Recurring_Donations_Settings</tab>
+    <tab>Payment_Mapping</tab>
+    <tab>Contact_Merge</tab>
     <tab>About_Nonprofit_Edition</tab>
 </CustomApplication>
