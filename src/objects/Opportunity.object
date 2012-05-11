@@ -866,16 +866,6 @@
         </picklistValues>
     </recordTypes>
     <webLinks>
-        <fullName>Add_Matching_Donation</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <linkType>url</linkType>
-        <masterLabel>Add Matching Donation</masterLabel>
-        <openType>replace</openType>
-        <protected>false</protected>
-        <url>{!Opportunity.AccountId}</url>
-    </webLinks>
-    <webLinks>
         <fullName>DeliveryStatus</fullName>
         <availability>online</availability>
         <displayType>link</displayType>
@@ -892,17 +882,6 @@
         <showsLocation>true</showsLocation>
         <showsStatus>true</showsStatus>
         <url>http://www.fedex.com/cgi-bin/tracking?tracknumbers={!Opportunity_Tracking_Number}&amp;action=track&amp;language=english&amp;cntry_code=us</url>
-    </webLinks>
-    <webLinks>
-        <fullName>Matching_Donation</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <height>600</height>
-        <linkType>page</linkType>
-        <masterLabel>Matching Donation</masterLabel>
-        <openType>sidebar</openType>
-        <page>BTN_MatchingDonation</page>
-        <protected>false</protected>
     </webLinks>
     <webLinks>
         <fullName>New_Contact_Donation</fullName>

@@ -1010,15 +1010,4 @@ LEN( WorkPhone__c )&gt;0
         <errorDisplayField>PreferredPhone__c</errorDisplayField>
         <errorMessage>You must select a Preferred Phone</errorMessage>
     </validationRules>
-    <webLinks>
-        <fullName>Copy_Address_to_Household</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <height>600</height>
-        <linkType>page</linkType>
-        <masterLabel>Copy Address to Household</masterLabel>
-        <openType>sidebar</openType>
-        <page>BTNContactAddressCopy</page>
-        <protected>false</protected>
-    </webLinks>
 </CustomObject>

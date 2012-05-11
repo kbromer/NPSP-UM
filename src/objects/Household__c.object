@@ -541,26 +541,4 @@ IF(NOT(ISNULL($Setup.Households_Settings__c.Membership_Grace_Period__c)), $Setup
         <searchResultsAdditionalFields>Formula_MailingAddress__c</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
-    <webLinks>
-        <fullName>Copy_Household_Address_to_Contacts</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <height>600</height>
-        <linkType>page</linkType>
-        <masterLabel>Copy Household Address to Contacts</masterLabel>
-        <openType>sidebar</openType>
-        <page>BTNHouseholdAddressCopy</page>
-        <protected>false</protected>
-    </webLinks>
-    <webLinks>
-        <fullName>New_Household_Member</fullName>
-        <availability>online</availability>
-        <displayType>massActionButton</displayType>
-        <linkType>url</linkType>
-        <masterLabel>New Household Member</masterLabel>
-        <openType>replace</openType>
-        <protected>false</protected>
-        <requireRowSelection>false</requireRowSelection>
-        <url>{!URLFOR($Action.Contact.NewContact, null, [  Contact.AssistantName = &quot;bob&quot;])}</url>
-    </webLinks>
 </CustomObject>
