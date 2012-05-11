@@ -894,6 +894,17 @@
         <url>http://www.fedex.com/cgi-bin/tracking?tracknumbers={!Opportunity_Tracking_Number}&amp;action=track&amp;language=english&amp;cntry_code=us</url>
     </webLinks>
     <webLinks>
+        <fullName>Matching_Donation</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Matching Donation</masterLabel>
+        <openType>sidebar</openType>
+        <page>BTN_MatchingDonation</page>
+        <protected>false</protected>
+    </webLinks>
+    <webLinks>
         <fullName>New_Contact_Donation</fullName>
         <availability>online</availability>
         <description>Replaces the standard New Donation button on the Donations related list on the Contact Page Layout if you have Donation Record Types.</description>

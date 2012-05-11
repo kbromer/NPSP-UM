@@ -390,6 +390,6 @@ public with sharing class householdsSettings {
         controller.editRollupSettings();
         controller.cancel();
         controller.deleteErrors();        
-        controller.updateSettings();                
+       // controller.updateSettings();                
     }    
 }

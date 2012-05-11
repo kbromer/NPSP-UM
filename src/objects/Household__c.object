@@ -36,7 +36,7 @@
         <actionName>View</actionName>
         <type>Default</type>
     </actionOverrides>
-    <deploymentStatus>InDevelopment</deploymentStatus>
+    <deploymentStatus>Deployed</deploymentStatus>
     <description>Physical mailing address for grouping contacts</description>
     <enableActivities>true</enableActivities>
     <enableEnhancedLookup>false</enableEnhancedLookup>

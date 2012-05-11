@@ -686,6 +686,18 @@
                 <default>false</default>
             </picklistValues>
             <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>One-to-One Individual</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Bucket Individual</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
                 <fullName>Customer - Direct</fullName>
                 <default>false</default>
             </picklistValues>
@@ -703,18 +715,6 @@
             </picklistValues>
             <picklistValues>
                 <fullName>Technology Partner</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>One-to-One Individual</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Bucket Individual</fullName>
                 <default>false</default>
             </picklistValues>
             <sorted>false</sorted>
@@ -1083,22 +1083,4 @@
             </values>
         </picklistValues>
     </recordTypes>
-    <webLinks>
-        <fullName>Billing</fullName>
-        <availability>online</availability>
-        <displayType>link</displayType>
-        <hasMenubar>true</hasMenubar>
-        <hasScrollbars>true</hasScrollbars>
-        <hasToolbar>true</hasToolbar>
-        <height>600</height>
-        <isResizable>true</isResizable>
-        <linkType>url</linkType>
-        <masterLabel>Billing</masterLabel>
-        <openType>newWindow</openType>
-        <position>none</position>
-        <protected>false</protected>
-        <showsLocation>true</showsLocation>
-        <showsStatus>true</showsStatus>
-        <url>http://www.genwatt.com/genwatt/billing.htm?actname={!Account_Name}</url>
-    </webLinks>
 </CustomObject>
